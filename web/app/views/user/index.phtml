@@ -1,0 +1,36 @@
+<?= $this->partial("header"); ?>
+<?= $this->partial("header-nav"); ?>
+<div class='main'>
+	<div class="row timeCellList">
+		<h5 class="page_title">登录时间格子<span class='cellSpan'><?=$cellDateFormatted ?></span></h5>
+		<div class="large-12 columns clearfix">
+			<input type="text" id='name' name='name' placeholder="输入用户名/手机/邮箱">
+			<input type="password" id='passwd' name='passwd' placeholder="输入密码">
+			<a id="bt_login" href="#" class="button">登录</a>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("a#bt_login").click(function(){
+		$.ajax({
+			method: "POST",
+			url: "<?= $this->url->get("user/login")?>",
+			data: {name:$("#name").val(), passwd:$("#passwd").val()},
+			dataType: "json"
+		})
+		.done(function( data ) {
+			if(data.code != 1){
+				alert('登录失败');
+			}else{
+				location.href = '<?=$this->url->get('time_cell/view')?>';
+			}
+		});
+	});
+});
+</script>
+
+<?= $this->partial("footer"); ?>

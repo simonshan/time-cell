@@ -1,0 +1,127 @@
+<?= $this->partial("header"); ?>
+<?= $this->partial("header-nav"); ?>
+<div class='main'>
+	<div class="row timeCellList">
+	<!-- 添加事项的隐藏modal -->
+		<div class="reveal" id="taskAddModal" data-reveal>
+			<div class="large-10 medium-10 columns">
+				<p class="lead">添加事项</p>
+				<input type="text" id='task' name='task' placeholder="输入事项内容">
+				<input type="hidden" id='cellSpanId' mame='cellSpanId'>
+				<a id="bt_add_task" href="#" class="button">添加</a>
+			</div>
+			<button class="close-button" data-close aria-label="Close modal" type="button">
+			    <span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		
+		<!-- 当天的事项 标题 -->
+		<div class="large-12 columns clearfix">
+			<input type="hidden" id='viewType' name='viewType' value='<?=$viewType ?>'>
+			<input type="hidden" id='viewValue' name='viewValue' value='<?=$viewValue ?>'>
+		
+			<h5 class="timeCellHead page_title float-left">时间格子</h5>
+			<div class='timeCellHead float-right'>
+				<span class="cellMarkTop label labelButton" id='bt_previous'><</span>
+				<span d-view-type='date' class="cellMarkTop label labelButton bt_current <?=($viewType=='date' ? 'active' : '') ?>">天</span>
+				<span d-view-type='week' class="cellMarkTop label labelButton bt_current <?=($viewType=='week' ? 'active' : '') ?>">周</span>
+				<span d-view-type='year' class="cellMarkTop label labelButton bt_current <?=($viewType=='year' ? 'active' : '') ?>">年</span>
+				<span class="cellMarkTop label labelButton" id='bt_next'>></span>
+			</div>
+		</div>
+		<!-- 当天的事项 内容 -->
+		<?php foreach($cellSpans as $span):?>
+		<div class="large-12 columns clearfix">
+			<div class=" callout timeCell">
+				<?php if('date' == $viewType):?>
+					<span d-cell-span-id='<?= $span['span']['id'];?>' class="cellMark after label labelButton bt_add_task float-right"><i class="fi-plus"></i></span>
+				<?php endif;?>
+				<span class='cellSpan timeLabel'><?=$span['span']['timeDisplay'] ?></span>
+				
+				<?php foreach($span['tasks'] as $task):?>
+				<p class='<?=($task['status']>0)?'done':'' ?>'><span d-task-id='<?=$task['id'] ?>' class="<?=($task['status']>0)?'done':'' ?> bt_done_task cellMark before label labelButton"><i class="fi-check"></i></span><?=$task['task'] ?></p>
+				<?php endforeach;?>
+			</div>
+		</div>
+		<?php endforeach;?>
+		
+		
+		<div class="large-12 columns"></div>
+		<div class="large-12 columns"></div>
+		
+		
+		<!-- 延期的事项 标题 -->
+		<div class="large-12 columns clearfix">
+			<h5 class="timeCellHead page_title">拖延症患者</h5>
+		</div>
+		<!-- 延期的事项 内容 -->
+		<?php foreach($spansDelayed as $cellDate => $tasks):?>
+		<div class="large-12 columns clearfix">
+			<div class=" callout timeCell">
+				<span class='cellSpan timeLabel'><?=$cellDate ?></span>
+				<?php foreach($tasks as $task):?>
+				<p class='<?=($task['status']>0)?'done':'' ?>'><span d-task-id='<?=$task['id'] ?>' class="<?=($task['status']>0)?'done':'' ?> bt_done_task cellMark before label labelButton"><i class="fi-check"></i></span><?=$task['task'] ?></p>
+				<?php endforeach;?>
+			</div>
+		</div>
+		<?php endforeach;?>
+	</div>
+</div>
+
+
+<?= $this->partial("footer"); ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(window).on(
+		'open.zf.reveal', function () {
+			$('#task').focus();
+		}
+	);
+    
+	$("a#bt_add_task").click(function(){
+		$.ajax({
+			method: "POST",
+			url: "<?= $this->url->get("time_cell/addTask")?>",
+			data: {task:$("#task").val(), cellSpanId:$("#cellSpanId").val(), cellDate:$("#viewValue").val()},
+			dataType: "json"
+		})
+		.done(function( data ) {
+			if(data.code == 1){
+				location.reload();
+			}
+			$('#taskAddModal').foundation('close');
+		});
+	});
+
+	$("span.bt_done_task").click(function(){
+		var v_ele = $(this);
+		$.ajax({
+			method: "POST",
+			url: "<?= $this->url->get("time_cell/doneTask")?>",
+			data: {id:v_ele.attr('d-task-id')},
+			dataType: "json"
+		})
+		.done(function( data ) {
+			if(data.code == 1){
+				v_ele.toggleClass('done');
+				v_ele.parent().toggleClass('done');
+			}
+		});
+	});
+
+	$("#bt_previous").click(function(){
+		location.href = "<?= $this->url->get("time_cell/view")?>?viewType=<?=$viewType ?>&viewValue=<?=$viewValue ?>&jump=previous";
+	});
+	$("span.labelButton.bt_current").click(function(){
+		location.href = "<?= $this->url->get("time_cell/view")?>?viewType=" + ($(this).attr('d-view-type'));
+	});
+	$("#bt_next").click(function(){
+		location.href = "<?= $this->url->get("time_cell/view")?>?viewType=<?=$viewType ?>&viewValue=<?=$viewValue ?>&jump=next";
+	});
+	
+	$('span.bt_add_task').click(function() {
+		$('#cellSpanId').val($(this).attr('d-cell-span-id'));
+		$('#taskAddModal').foundation('open');
+	});
+});
+</script>

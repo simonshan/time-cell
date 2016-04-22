@@ -1,0 +1,30 @@
+<?= $this->partial("header"); ?>
+<?= $this->partial("header-nav"); ?>
+
+
+<div class="row main">
+	<div class="large-4 columns app-list">
+		<h5>Apps</h5>
+		<ul class="menu vertical">
+		  <li><a href="<?= $this->url->get('finance/compound')?>"><i class="fi-graph-trend medium"></i>定投收益计算器</a></li>
+		  <li><a href="<?= $this->url->get('time_cell/view')?>"><i class="fi-clock medium"></i>时间格子</a></li>
+		</ul>
+	</div>
+	
+	<div class="large-4 columns app-list">
+		<h5>H5 Demos</h5>
+		<ul class="menu vertical">
+		  <li><a href="<?= $this->url->get('h5demo')?>"> <i class="fi-html5 medium"></i>H5 Demos</a></li>
+		</ul>
+	</div>
+	
+	<div class="large-4 columns app-list">
+		<h5>H5 Games</h5>
+		<ul class="menu vertical">
+		  <li><a href="<?= $this->url->get('h5demo')?>"> <i class="fi-html5 medium"></i>H5 Games</a></li>
+		</ul>
+	</div>
+</div>
+
+    
+<?= $this->partial("footer"); ?>

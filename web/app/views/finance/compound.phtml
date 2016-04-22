@@ -1,0 +1,92 @@
+<?= $this->partial("header"); ?>
+<?= $this->partial("header-nav"); ?>
+<div class='main'>
+<div class="row">
+	<div class="large-12 medium-12 columns">
+		<h5>定投收益计算器</h5>
+		<form>
+			<div class="row">
+				<div class="large-2 medium-2 columns">
+					<div class="row collapse">
+						<div class="input-group">
+							<input type="text" id="field_initial" placeholder="初始金额" class="input-group-field" /> <span class="input-group-label">元</span>
+						</div>
+					</div>
+				</div>
+				<div class="large-2 medium-2 columns">
+					<div class="row collapse">
+						<div class="input-group">
+							<input type="text" id="field_amount" placeholder="月定投金额" class="input-group-field" /> <span class="input-group-label">元</span>
+						</div>
+					</div>
+				</div>
+				<div class="large-2 medium-2 columns">
+					<div class="row collapse">
+						<div class="input-group">
+							<input type="text" id="field_year" placeholder="定投总年数" class="input-group-field" /> <span class="input-group-label">年</span>
+						</div>
+					</div>
+				</div>
+				<div class="large-2 medium-2 columns">
+					<div class="row collapse">
+						<div class="input-group">
+							<input type="text" id="field_interest" placeholder="预期年收益" class="input-group-field" /> <span class="input-group-label">%</span>
+						</div>
+					</div>
+				</div>
+				<div class="large-2 medium-2 columns">
+					<a id="bt_compound" href="#" class="button">计算</a>
+				</div>
+				<div class="large-2 medium-2 columns">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-8 medium-8 columns">
+		<table id="tb_result" style='display: none;font-size:12px;'>
+			<thead>
+				<tr>
+					<th style='min-width:70px;'>年 \ 元</th>
+					<th style='min-width:75px;'>本金</th>
+					<th style='min-width:75px;'>利息</th>
+					<th style='min-width:75px;'>本息</th>
+					<th style='min-width:75px;'>平均年息</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#bt_compound").click(function(){
+		$.ajax({
+			method: "POST",
+			url: "<?= $this->url->get("Api_Finance/computeCompound")?>",
+			data: {initial:$("#field_initial").val(), amount:$("#field_amount").val(), year:$("#field_year").val(), interest:$("#field_interest").val()},
+			dataType: "json"
+		})
+		.done(function( data ) {
+			if(data.ret == 0){
+				var tbody = '<tbody>';
+				for(var i=0; i< data.data.length; i++ ){
+					tbody += "<tr><td>"+data.data[i]['year']+"</td>";
+					tbody += "<td>"+data.data[i]['totalInvest']+"</td>";
+					tbody += "<td>"+data.data[i]['totalProfit']+"</td>";
+					tbody += "<td>"+data.data[i]['totalIncome']+"</td>";
+					tbody += "<td>"+Math.round(data.data[i]['totalProfit'] / data.data[i]['year'])+"</td></tr>";
+				}
+				tbody += "</tbody>";
+				$("#tb_result").html("<thead>"+$("#tb_result>thead").html()+ "</thead>" + tbody);
+				$("#tb_result").show();
+			}
+		});
+	});
+});
+</script>
+
+<?= $this->partial("footer"); ?>

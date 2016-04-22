@@ -1,0 +1,132 @@
+@CHARSET "UTF-8";
+
+html, body {
+    font-size: 100%;
+}
+body {
+    background: white;
+    color: #222222;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    position: relative;
+    cursor: default;
+}
+
+
+div.top-bar {
+    height: 45px;
+    line-height: 45px;
+    margin: 0 0 30px;
+    padding: 0;
+    width: 100%;
+    margin-bottom:15px;
+}
+div.top-bar span.top-bar-item{
+	margin-left:0.625rem;
+	margin-right:0.625rem;
+} 
+div.top-bar span.top-bar-item a{
+	font-weight:bolder;
+}
+div.top-bar ul {
+    margin-left: 0;
+    display: inline;
+    height: 45px;
+    line-height: 45px;
+    list-style: none;
+}
+div.top-bar li.menu-text{
+	padding-left:0.625rem;
+}
+div.top-bar .menu  a {
+    padding: 0;
+}
+div.app-list .menu > li > a {
+	padding: 0.5rem 0rem;
+}
+div.app-list{
+	padding-left:0.625rem;
+}
+div.app-list i{
+	color: #2199e8;
+    text-decoration: none;
+    width:16px;
+    text-align:center;
+}
+
+
+div.main{
+	height:80%;
+}
+div.main .column, div.main .columns{
+	margin-bottom: 0.5rem;
+}
+
+
+div.timeCellList .callout{
+	margin: 0 0 0.5rem 0;
+	font-size:0.8rem;
+	padding:1.0rem 0.8rem;
+	min-height:50px;
+}
+div.timeCellList .cellSpan{
+	font-size:0.6rem;
+	color:#bbb;
+}
+div.timeCellList h5{
+	margin-bottom:0;
+	/*
+	padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    */
+}
+.timeCellHead .menu > li > a {
+    /* padding: 0.7rem 1rem; */
+    line-height: 1.4;
+    padding:0;
+}
+.timeCellHead .dropdown.menu>li.is-dropdown-submenu-parent>a, .timeCellHead .dropdown.menu>li.is-dropdown-submenu-parent>a:after{
+	padding-left: 0.2rem;
+	padding-right:0.2rem;
+	border-style: none;
+}
+div.timeCellList .callout > p{
+	margin-bottom: 0.5rem;
+}
+div.timeCellList .callout > :first-child {
+    margin-top: 0;
+}
+div.timeCellList .callout > :last-child {
+    margin-bottom: 0;
+}
+div.timeCellList .cellMark{
+	margin-right:4px;
+	padding:4px;
+}
+div.timeCellList .cellMarkTop{
+	margin-left:4px;
+	padding:4px 6px;;
+}
+div.timeCellList .cellMarkTop.label.active{
+	background: #0169c8;
+}
+.label.labelButton{
+	cursor: pointer;
+}
+div.timeCellList p.done{
+	color: #bbb;
+}
+div.timeCellList .label.done{
+	background-color: #aaa;
+}
+div.timeCellList span.timeLabel{
+	position:absolute;
+	padding-left:2px;
+	padding-right:2px;
+	top:-0.3rem;
+	right:0.8rem;
+	background:#fff;
+}

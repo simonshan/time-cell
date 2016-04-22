@@ -1,0 +1,7 @@
+<div class="top-bar">
+	<span class='top-bar-item float-left'><a href='<?= $this->url->getBaseUri() ?>'><?= $page_title ?></a></span>
+	
+	<?php if($user = $this->session->get('user')): ?>
+	<span class='top-bar-item float-right'><?=$user['name'] ?>|<a href='<?=$this->url->get('user/logout') ?>'>退出</a></span>
+	<?php endif; ?>
+</div>
