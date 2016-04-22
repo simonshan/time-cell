@@ -1,4 +1,5 @@
 <?php
+# error display
 error_reporting(E_ERROR);
 
 use Phalcon\Loader;
